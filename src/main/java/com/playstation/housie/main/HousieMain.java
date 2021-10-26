@@ -30,7 +30,7 @@ public class HousieMain {
     System.out.println(">>Enter Ticket Size : 3 * 9");
     System.out.println(">>Enter numbers per row : 5");
 
-    long gameId = BoardManagementService.createNewBoard();
+    long gameId = BoardManagementService.createNewBoard(range);
     HousieBoard board = BoardManagementService.loadBoard(gameId);
 
     ProfileManagementService profileManagementService =
@@ -102,4 +102,5 @@ public class HousieMain {
       System.out.println(k + " : " + map.get(k));
     }
   }
+
 }

@@ -12,7 +12,7 @@ public class BoardManagementTest {
 
 	@Test
 	public void test() {
-		long gameId = BoardManagementService.createNewBoard();
+		long gameId = BoardManagementService.createNewBoard(90);
 		assertNotNull("The Game Id should not be null", gameId);
 		try {
 			for (int i = 0; i < 90; i++) {

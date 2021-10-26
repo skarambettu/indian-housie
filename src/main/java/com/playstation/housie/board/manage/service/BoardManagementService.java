@@ -15,8 +15,8 @@ public class BoardManagementService {
 	 * 
 	 * @return Id of the game created
 	 */
-	public static long createNewBoard() {
-		HousieBoard board = new HousieBoard();
+	public static long createNewBoard(int boardSize) {
+		HousieBoard board = new HousieBoard(boardSize);
 		boardRepository.create(board);
 		return board.getId();
 	}

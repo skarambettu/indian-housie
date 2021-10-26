@@ -40,18 +40,22 @@ public class HousieBoard {
 	
 	@OneToMany
 	private List<HousieTicket> tickets;
-
+	
+	public HousieBoard() {
+	  
+	}
+	
 	/**
 	 * Constructor to create a new housie Board
 	 */
-	public HousieBoard() {
+	public HousieBoard(int boardSize) {
 		this.drawnNumbers = new ArrayList<Integer>();
-		updateUndrawnNumbers();
+		updateUndrawnNumbers(boardSize);
 	}
 	
-	public HousieBoard(List<Integer> pDrawnNumbers) {
+	public HousieBoard(List<Integer> pDrawnNumbers, int boardSize) {
 		this.drawnNumbers = pDrawnNumbers;
-		updateUndrawnNumbers();
+		updateUndrawnNumbers(boardSize);
 	}
 
 	/**
@@ -116,8 +120,8 @@ public class HousieBoard {
 	 * Update the list of drawn numbers from the list of drawn numbers
 	 * 
 	 */
-	public void updateUndrawnNumbers() {
-		int boardSize = 90;
+	public void updateUndrawnNumbers(int boardSize) {
+		//int boardSize = 90;
 		this.undrawnNumbers = new ArrayList<Integer>(boardSize);
 		for (int i = 0; i < boardSize; i++) {
 			undrawnNumbers.add(i, i + 1);

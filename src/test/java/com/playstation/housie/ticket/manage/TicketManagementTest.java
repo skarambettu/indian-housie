@@ -16,7 +16,7 @@ public class TicketManagementTest {
 	@Test
 	public void test() {
 	  
-		long gameId = BoardManagementService.createNewBoard();
+		long gameId = BoardManagementService.createNewBoard(90);
 		HousieBoard board = BoardManagementService.loadBoard(gameId);
 		
 		ProfileManagementService profileManagementService = new ProfileManagementService();
