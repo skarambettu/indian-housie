@@ -1,8 +1,11 @@
 package com.playstation.housie.main;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.playstation.housie.board.HousieBoard;
 import com.playstation.housie.board.manage.service.BoardManagementService;
@@ -15,7 +18,7 @@ import com.playstation.housie.ticket.manage.service.TicketManagementService;
 
 public class HousieMain {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InvalidGameException, FullBoardException {
     System.out.println("*** Lets Play Housie *******");
 
     System.out.println(" Note: - Press 'Q' to quit any time");
@@ -43,41 +46,60 @@ public class HousieMain {
     System.out.println("**Ticket created Successfully ****");
     System.out.println(">> Press 'N' to generate next number :");
     String pressN = sc.nextLine();
-    //if ("N".equals(pressN)) {
-      for (int i = 0; i < 90; i++) {
-        int drawnNumber = 0;
-        try {
-          drawnNumber = BoardManagementService.drawNextNumber(gameId);
-          System.out.println("Next number is: " + drawnNumber);
-        } catch (FullBoardException e) {
-          e.printStackTrace();
-        } catch (InvalidGameException e) {
-          e.printStackTrace();
+    Map<String, String> map = new LinkedHashMap<>();
+    for (int i = 0; i < 90; i++) {
+      int drawnNumber = 0;
+      try {
+        drawnNumber = BoardManagementService.drawNextNumber(gameId);
+        System.out.println("Next number is: " + drawnNumber);
+      } catch (FullBoardException e) {
+        throw e;
+      } catch (InvalidGameException e) {
+        throw e;
+      }
+
+      for (int j = 0; j < ticketList.size(); j++) {
+        ticketList.get(j).claimNumber(drawnNumber);
+
+        Profile profile = ticketList.get(j).getProfile();
+        int claimNumbers = ticketList.get(j).claimNumbers(profile);
+
+        if (claimNumbers == 5) {
+          System.out.println("We have a winner: " + profile.getName()
+              + " has won 'First Five' winning combination");
+          map.put(profile.getName(), "FirstFive");
         }
-
-        for (int j = 0; j < ticketList.size(); j++) {
-          ticketList.get(j).claimNumber(drawnNumber);
-
-          Profile profile = ticketList.get(j).getProfile();
-          int claimNumbers = ticketList.get(j).claimNumbers(profile);
-
-          if (claimNumbers == 5) {
-            System.out.println("We have a winner: " + profile.getName()
-                + " has won 'First Five' winning combination");
+        int topLine = ticketList.get(i).topLine(profile);
+        if (topLine == 5) {
+          System.out.println("We have a winner: " + profile.getName()
+              + " has won 'Top Line' winning combination");
+          if (map.containsKey(profile.getName())) {
+            String value = map.get(profile.getName());
+            map.put(profile.getName(), value + "," + "TopLine");
+          } else {
+            map.put(profile.getName(), "TopLine");
           }
-          int topLine = ticketList.get(i).topLine(profile);
-          if (topLine == 5) {
-            System.out.println("We have a winner: " + profile.getName()
-                + " has won 'Top Line' winning combination");
-          }
-          if (claimNumbers == 15) {
-            System.out.println("We have a winner: " + profile.getName()
-                + " has won 'Full House' winning combination");
+        }
+        if (claimNumbers == 15) {
+          System.out.println("We have a winner: " + profile.getName()
+              + " has won 'Full House' winning combination");
+
+          if (map.containsKey(profile.getName())) {
+            String value = map.get(profile.getName());
+            map.put(profile.getName(), value + "," + "FullHouse");
+          } else {
+            map.put(profile.getName(), "FullHouse");
           }
         }
       }
-      System.out.println("****** Game Over *******");
-    //}
-  }
+    }
+    System.out.println("****** Game Over *******");
+    System.out.println("================================");
+    System.out.println("Summary");
 
+    Set<String> keys = map.keySet();
+    for (String k : keys) {
+      System.out.println(k + " : " + map.get(k));
+    }
+  }
 }
