@@ -45,9 +45,20 @@ public class HousieMain {
     }
     System.out.println("**Ticket created Successfully ****");
     System.out.println(">> Press 'N' to generate next number :");
+    
+    // Number generation and winner announcement
+    numberGeneration(range, gameId, ticketList, sc);
+  }
+  
+  private static void numberGeneration(int range, long gameId, List<HousieTicket> ticketList, Scanner sc) throws FullBoardException, InvalidGameException {
     String pressN = sc.nextLine();
+    System.out.println(pressN);
     Map<String, String> map = new LinkedHashMap<>();
-    for (int i = 0; i < 90; i++) {
+    
+    boolean firstFiveBool = false;
+    boolean topFive = false;
+    boolean fullHouse = false;
+    for (int i = 0; i < range; i++) {
       int drawnNumber = 0;
       try {
         drawnNumber = BoardManagementService.drawNextNumber(gameId);
@@ -57,20 +68,21 @@ public class HousieMain {
       } catch (InvalidGameException e) {
         throw e;
       }
-
+      
       for (int j = 0; j < ticketList.size(); j++) {
         ticketList.get(j).claimNumber(drawnNumber);
 
         Profile profile = ticketList.get(j).getProfile();
         int claimNumbers = ticketList.get(j).claimNumbers(profile);
 
-        if (claimNumbers == 5) {
+        if (claimNumbers == 5 && firstFiveBool == false) {
           System.out.println("We have a winner: " + profile.getName()
               + " has won 'First Five' winning combination");
           map.put(profile.getName(), "FirstFive");
+          firstFiveBool = true;
         }
-        int topLine = ticketList.get(i).topLine(profile);
-        if (topLine == 5) {
+        int topLine = ticketList.get(j).topLine(profile);
+        if (topLine == 5 && topFive == false) {
           System.out.println("We have a winner: " + profile.getName()
               + " has won 'Top Line' winning combination");
           if (map.containsKey(profile.getName())) {
@@ -79,8 +91,9 @@ public class HousieMain {
           } else {
             map.put(profile.getName(), "TopLine");
           }
+          topFive = true;
         }
-        if (claimNumbers == 15) {
+        if (claimNumbers == 15 && fullHouse == false) {
           System.out.println("We have a winner: " + profile.getName()
               + " has won 'Full House' winning combination");
 
@@ -90,6 +103,7 @@ public class HousieMain {
           } else {
             map.put(profile.getName(), "FullHouse");
           }
+          fullHouse = true;
         }
       }
     }
@@ -102,5 +116,4 @@ public class HousieMain {
       System.out.println(k + " : " + map.get(k));
     }
   }
-
 }
