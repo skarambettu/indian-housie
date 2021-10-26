@@ -43,7 +43,7 @@ public class HousieMain {
     System.out.println("**Ticket created Successfully ****");
     System.out.println(">> Press 'N' to generate next number :");
     String pressN = sc.nextLine();
-    if ("N".equals(pressN)) {
+    //if ("N".equals(pressN)) {
       for (int i = 0; i < 90; i++) {
         int drawnNumber = 0;
         try {
@@ -77,7 +77,7 @@ public class HousieMain {
         }
       }
       System.out.println("****** Game Over *******");
-    }
+    //}
   }
 
 }
