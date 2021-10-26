@@ -1,11 +1,14 @@
 package com.playstation.housie.main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.playstation.housie.board.HousieBoard;
 import com.playstation.housie.board.manage.service.BoardManagementService;
@@ -45,15 +48,15 @@ public class HousieMain {
     }
     System.out.println("**Ticket created Successfully ****");
     System.out.println(">> Press 'N' to generate next number :");
-    
+    sc.nextLine();
     // Number generation and winner announcement
     numberGeneration(range, gameId, ticketList, sc);
   }
   
   private static void numberGeneration(int range, long gameId, List<HousieTicket> ticketList, Scanner sc) throws FullBoardException, InvalidGameException {
     String pressN = sc.nextLine();
-    System.out.println(pressN);
-    Map<String, String> map = new LinkedHashMap<>();
+    //System.out.println(pressN);
+    Map<String, String> map = new HashMap<>();
     
     boolean firstFiveBool = false;
     boolean topFive = false;
@@ -111,8 +114,8 @@ public class HousieMain {
     System.out.println("================================");
     System.out.println("Summary");
 
-    Set<String> keys = map.keySet();
-    for (String k : keys) {
+    SortedSet<String> sortedKeys = new TreeSet<>(map.keySet());
+    for (String k : sortedKeys) {
       System.out.println(k + " : " + map.get(k));
     }
   }
