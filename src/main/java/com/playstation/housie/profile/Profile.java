@@ -40,8 +40,8 @@ public class Profile {
 	/**
      * @return the name
      */
-    public long getName() {
-        return id;
+    public String getName() {
+        return name;
     }
 
     /**
