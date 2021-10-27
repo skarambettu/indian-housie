@@ -2,11 +2,9 @@ package com.playstation.housie.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -107,7 +105,11 @@ public class HousieMain {
             map.put(profile.getName(), "FullHouse");
           }
           fullHouse = true;
+          break;
         }
+      }
+      if (fullHouse) {
+        break;
       }
     }
     System.out.println("****** Game Over *******");
